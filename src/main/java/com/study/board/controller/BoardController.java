@@ -1,53 +1,87 @@
 package com.study.board.controller;
 
 import com.study.board.entity.Board;
-import com.study.board.sevice.BoardService;
+import com.study.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 public class BoardController {
+
+
     @Autowired
     private BoardService boardService;
-    @GetMapping("/board/write")    //localhost:8090/board/write
+
+    //write check --> postmapping ==> 각 프로세스로 매칭
+
+    @GetMapping("/board/write") //localhost:8090/board/write
     public String boardWriteForm() {
 
         return "boardWrite";
     }
 
-    @PostMapping("/board/writePro")
-    public String boardWritePro(Board board) {
+    //process1 : file 유
+    //process2 : file 무
 
-        boardService.write(board);
-        System.out.println(board.getTitle());
+    @PostMapping("/board/writepro")
+    public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
 
-        return "";
+//        boardService.write(board, file);
+        boardService.write(board, file);
+
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
     }
 
-    @GetMapping("board/list")           //해당 url로 연결하면
-    public String boardList(Model model) {
+    
+    //페이징 처리하기
+    //nowPage = 현재 페이지
+    //startPage = 블럭에서 보여줄 시작 페이지
+    //endPage = 블럭에서 보여줄 마지막 페이지
+    @GetMapping("/board/list")
+    public String boardList(Model model,    //page: default페이지, size:한 페이지 게시글 수, sort:정렬 기준 컬럼, direction: 정렬 순서
+                            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            String searchKeyword) {
 
-        model.addAttribute("list", boardService.boardList());
+        Page<Board> list = null;
 
-        return "boardList";             //아래 html 파일로 연결을 시켜준다.
+        if(searchKeyword == null) {
+            list = boardService.boardList(pageable);
+        }else {
+            list = boardService.boardSearchList(searchKeyword, pageable);
+        }
+
+        int nowPage = list.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);               //두 개 비교해서 큰 값을 반환한다.
+        int endPage = Math.min(nowPage + 5, list.getTotalPages());
+
+        model.addAttribute("list", list);
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "boardList";
     }
 
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
     public String boardView(Model model, Integer id) {
+
         model.addAttribute("board", boardService.boardView(id));
         return "boardView";
-    }
-
-    @GetMapping("board/delete")           //localhost:8090/board/delete?id=1
-    public String boardDelete(Integer id) {
-        boardService.boardDelete(id);
-
-        return "redirect:/board/list";
     }
 
     @GetMapping("/board/modify/{id}")
@@ -60,14 +94,16 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board){
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, MultipartFile file) throws Exception {
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        boardTemp.setTime(board.getTime());
+
+        boardService.write(boardTemp, file);
 
         return "redirect:/board/list";
 
     }
-
 }
