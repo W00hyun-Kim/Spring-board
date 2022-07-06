@@ -25,6 +25,7 @@
             <th>글번호</th>
             <th>제목</th>
             <th>시간</th>
+            <th>countView</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
             </td>
             <td th:text="${board.time}"></td>
+            <td th:text="${board.countView}"></td>
         </tr>
         </tbody>
     </table>

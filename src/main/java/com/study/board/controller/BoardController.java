@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class BoardController {
@@ -72,8 +74,18 @@ public class BoardController {
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
     public String boardView(Model model, Integer id) {
 
+//        boardService.updateView(id);    //view ++;
         model.addAttribute("board", boardService.boardView(id));
+
         return "boardView";
+    }
+
+    @GetMapping("/board/delete/{id}") // localhost:8080/board/delete?id=1
+    public String boardDelete(@PathVariable("id") Integer id) {
+
+        boardService.boardDelete(id);
+
+        return "redirect:/board/list";
     }
 
     @GetMapping("/board/modify/{id}")
@@ -86,14 +98,21 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, MultipartFile file) throws Exception {
+    public String boardUpdate(@PathVariable("id") Integer id, Board board) throws Exception {
+
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
-        boardTemp.setTime(board.getTime());
+        boardTemp.setTime(nowTime);
 
-        boardService.write(boardTemp, file);
+// file editing function -->
+//        boardTemp.setFilename(board.getFilename());
+//        boardTemp.setFilepath(board.getFilepath());
+
+//        boardService.write(boardTemp, file);
+        boardService.write(boardTemp);
 
         return "redirect:/board/list";
 

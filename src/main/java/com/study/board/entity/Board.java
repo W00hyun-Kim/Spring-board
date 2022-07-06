@@ -1,6 +1,6 @@
 package com.study.board.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,7 +16,7 @@ public class Board {
     @Column
     private Integer id;
 
-    @Column
+    @Column(length = 500)
     private String title;
 
     @Column(name = "time")
@@ -26,15 +26,18 @@ public class Board {
         this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
     }
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column
-    private String countView;
+    private Integer countView;
 
     @Column
     private String filename;
 
     @Column
     private String filepath;
+
+
+
 }
