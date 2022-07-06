@@ -30,6 +30,9 @@ public class Board {
     private String content;
 
     @Column
+    private String countView;
+
+    @Column
     private String filename;
 
     @Column

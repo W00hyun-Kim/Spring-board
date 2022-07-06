@@ -21,21 +21,23 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
-    // 글 작성 처리
     public void write(Board board, MultipartFile file) throws Exception {
 
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-
+        String projectPath = System.getProperty("user.dir") +
+                            "\\src\\main\\resources\\static\\files";
         UUID uuid = UUID.randomUUID();  //식별자 랜덤으로 이름만들기
+        String fileName ="";
 
-        String fileName = uuid + "_" + file.getOriginalFilename();
+        if(file.getOriginalFilename()=="") {
+            fileName = "No files";
+        } else {
+            fileName = uuid + "_" + file.getOriginalFilename();
+        }
+            File saveFile = new File(projectPath, fileName);
+            file.transferTo(saveFile);
 
-        File saveFile = new File(projectPath, fileName);
-
-        file.transferTo(saveFile);
-
-        board.setFilename(fileName);
-        board.setFilepath("/files/" + fileName);
+            board.setFilename(fileName);
+            board.setFilepath("/files/" + fileName);
 
         boardRepository.save(board);
     }
@@ -47,7 +49,7 @@ public class BoardService {
     }
 
     public Page<Board> boardSearchList(String searchKeyword, Pageable pageable) {
-        //findByy(컬럼이름) ---> 검색할 때 정확히 일치해야 찾을 수 있음
+        //findBy(컬럼이름) ---> 검색할 때 정확히 일치해야 찾을 수 있음
         //findBy(컬럼이름)Containing --> 김우현 검색하고 싶을 때 김만 검색해도 됨
         return boardRepository.findByTitleContaining(searchKeyword, pageable);
     }

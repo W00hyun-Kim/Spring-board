@@ -20,11 +20,8 @@ import java.io.IOException;
 @Controller
 public class BoardController {
 
-
     @Autowired
     private BoardService boardService;
-
-    //write check --> postmapping ==> 각 프로세스로 매칭
 
     @GetMapping("/board/write") //localhost:8090/board/write
     public String boardWriteForm() {
@@ -32,13 +29,8 @@ public class BoardController {
         return "boardWrite";
     }
 
-    //process1 : file 유
-    //process2 : file 무
-
     @PostMapping("/board/writepro")
     public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
-
-//        boardService.write(board, file);
         boardService.write(board, file);
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
@@ -47,7 +39,7 @@ public class BoardController {
         return "message";
     }
 
-    
+
     //페이징 처리하기
     //nowPage = 현재 페이지
     //startPage = 블럭에서 보여줄 시작 페이지
