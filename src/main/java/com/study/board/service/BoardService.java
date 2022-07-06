@@ -23,6 +23,11 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Transactional
+    public int updateView(int id) {
+        return boardRepository.updateView(id);
+    }
+
     public void write(Board board, MultipartFile file) throws Exception {
 
         String projectPath = System.getProperty("user.dir") +
@@ -71,6 +76,7 @@ public class BoardService {
 
         boardRepository.deleteById(id);
     }
+
 
 
 }

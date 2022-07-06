@@ -74,8 +74,8 @@ public class BoardController {
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
     public String boardView(Model model, Integer id) {
 
-//        boardService.updateView(id);    //view ++;
         model.addAttribute("board", boardService.boardView(id));
+        model.addAttribute("view", boardService.updateView(id));
 
         return "boardView";
     }
