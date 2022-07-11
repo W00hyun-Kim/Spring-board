@@ -1,39 +1,48 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>게시물 작성폼</title>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      max-width: 560px;
+    }
+  </style>
 </head>
-
-<style>
-
-  .layout {
-    width : 500px;
-    margin : 0 auto;
-    margin-top : 40px;
-  }
-
-  .layout input {
-    width : 100%;
-    box-sizing : border-box
-  }
-
-  .layout textarea {
-    width : 100%;
-    margin-top : 10px;
-    min-height : 300px;
-  }
-
-</style>
-
 <body>
-<div class="layout">
-  <form th:action="@{/board/update/{id}(id = ${board.id})}" method="post">
-    <input name="title" type="text" th:value="${board.title}">
-    <textarea name="content" th:text="${board.content}"></textarea>
-<!--    <input type="file" name="file" th:value="${board.filename}">-->
-    <button type="submit">수정</button>
+
+<div class="container">
+
+  <div class="py-5 text-center">
+    <h2>글 수정</h2>
+  </div>
+
+  <form th:action="@{/board/update/{id}(id = ${board.id})}" method="post" enctype="multipart/form-data">
+
+
+    <div>
+      <label>제목</label>
+      <input name="title" type="text" class="form-control" th:value="${board.title}">
+
+    </div>
+    <div>
+      <label>내용</label>
+      <textarea cols="150" rows="10" id="contents"  name="content" class="form-control" th:text="${board.content}">
+            </textarea>
+
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg" type="submit">수정</button>
+      </div>
+    </div>
+
   </form>
-</div>
+
+</div> <!-- /container -->
 </body>
 </html>

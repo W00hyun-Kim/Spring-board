@@ -17,11 +17,8 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Modifying
     @Query("update Board p set p.countView = p.countView + 1 where p.id = :id")
-    int updateView(@Param("id") Integer id);
+    int updateView(@Param("id") int id);
 
     Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
-
-
-
 
 }

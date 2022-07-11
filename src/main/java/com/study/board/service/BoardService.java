@@ -23,10 +23,7 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
-    @Transactional
-    public int updateView(int id) {
-        return boardRepository.updateView(id);
-    }
+
 
     public void write(Board board, MultipartFile file) throws Exception {
 
@@ -69,6 +66,11 @@ public class BoardService {
     public Board boardView(Integer id) {
 
         return boardRepository.findById(id).get();
+    }
+
+    @Transactional
+    public int updateView(int id) {
+        return boardRepository.updateView(id);
     }
 
     //특정 게시글 지우기

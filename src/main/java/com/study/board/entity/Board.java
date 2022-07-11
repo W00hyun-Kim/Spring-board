@@ -29,8 +29,8 @@ public class Board {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
-    private Integer countView;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int countView;
 
     @Column
     private String filename;

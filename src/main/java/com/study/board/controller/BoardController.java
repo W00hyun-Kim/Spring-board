@@ -33,6 +33,16 @@ public class BoardController {
 
     @PostMapping("/board/writepro")
     public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
+        if(board.getTitle().isEmpty()) {
+            model.addAttribute("message", "제목을 입력해주세요.");
+            model.addAttribute("searchUrl", "/board/write");
+            return "message";
+        } else if(board.getContent().isEmpty()) {
+            model.addAttribute("message", "내용을 입력해주세요.");
+            model.addAttribute("searchUrl", "/board/write");
+            return "message";
+        }
+
         boardService.write(board, file);
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
@@ -40,7 +50,6 @@ public class BoardController {
 
         return "message";
     }
-
 
     //페이징 처리하기
     //nowPage = 현재 페이지
@@ -73,10 +82,8 @@ public class BoardController {
 
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
     public String boardView(Model model, Integer id) {
-
         model.addAttribute("board", boardService.boardView(id));
         model.addAttribute("view", boardService.updateView(id));
-
         return "boardView";
     }
 
@@ -100,7 +107,7 @@ public class BoardController {
     @PostMapping("/board/update/{id}")
     public String boardUpdate(@PathVariable("id") Integer id, Board board) throws Exception {
 
-        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toString();
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
@@ -118,3 +125,4 @@ public class BoardController {
 
     }
 }
+
