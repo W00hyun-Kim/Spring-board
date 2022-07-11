@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>게시글 리스트 페이지</title>
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+          href="../static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -51,7 +51,8 @@
     </div><br>
     <div style="text-align:center; margin:auto">
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+            <a th:if="${page == 0}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" ></a>
+            <a th:if="${page != 0 && page != nowPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
             <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
         </th:block>
         <br>

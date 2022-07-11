@@ -68,7 +68,8 @@ public class BoardController {
             list = boardService.boardSearchList(searchKeyword, pageable);
         }
 
-        int nowPage = list.getPageable().getPageNumber() + 1;
+        int nowPage = list.getPageable().getPageNumber() +1;
+
         int startPage = Math.max(nowPage - 4, 1);               //두 개 비교해서 큰 값을 반환한다.
         int endPage = Math.min(nowPage + 5, list.getTotalPages());
 
