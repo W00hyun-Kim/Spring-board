@@ -30,12 +30,12 @@
 
     <div>
         <label>조회수</label>
-        <input type="text" class="form-control" th:value="${view}" readonly>
+        <input type="text" class="form-control" th:value="${board.countView}" readonly>
     </div>
 
     <div>
         <label>글 내용</label>
-        <input type="text" class="form-control" th:value="${board.content}" readonly>
+        <textarea cols="150" rows="10" id="contents"  name="content" class="form-control" th:text="${board.content}" readonly></textarea>
     </div>
 
 

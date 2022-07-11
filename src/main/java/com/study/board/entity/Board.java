@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data
+@Getter @Setter
 public class Board {
 
     @Id
