@@ -24,12 +24,15 @@
     <div>
       <label>제목</label>
       <input name="title" type="text" class="form-control" th:value="${board.title}">
-
+    </div>
+    <div>
+      <label>작성자</label>
+      <input name="writer" type="text" class="form-control" th:value="${board.writer}">
     </div>
     <div>
       <label>내용</label>
       <textarea cols="150" rows="10" id="contents"  name="content" class="form-control" th:text="${board.content}">
-            </textarea>
+      </textarea>
 
     </div>
 

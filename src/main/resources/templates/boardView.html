@@ -29,6 +29,11 @@
     </div>
 
     <div>
+        <label>작성자</label>
+        <input type="text" class="form-control" th:value="${board.writer}" readonly>
+    </div>
+
+    <div>
         <label>조회수</label>
         <input type="text" class="form-control" th:value="${board.countView}" readonly>
     </div>
@@ -37,7 +42,6 @@
         <label>글 내용</label>
         <textarea cols="150" rows="10" id="contents"  name="content" class="form-control" th:text="${board.content}" readonly></textarea>
     </div>
-
 
     <div>
         <label>등록일</label>

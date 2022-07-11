@@ -39,6 +39,9 @@ public class Board {
     @Column
     private String filepath;
 
+    @Column
+    private String writer;
+
 
 
 }

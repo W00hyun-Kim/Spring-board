@@ -112,6 +112,7 @@ public class BoardController {
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        boardTemp.setWriter(board.getWriter());
         boardTemp.setTime(nowTime);
 
 // file editing function -->

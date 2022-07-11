@@ -27,7 +27,8 @@
             <thead>
             <tr style="text-align: center">
                 <th>글번호</th>
-                <th> 제목</th>
+                <th>제목</th>
+                <th>작성자</th>
                 <th>등록일</th>
                 <th>조회수</th>
             </tr>
@@ -40,6 +41,7 @@
                 <td>
                     <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
                 </td>
+                <td style="text-align: center" th:text="${board.writer}"></td>
                 <td style="text-align: center" th:text="${board.time}"></td>
                 <td style="text-align: center" th:text="${board.countView}"></td>
             </tr>
