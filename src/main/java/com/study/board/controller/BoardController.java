@@ -60,6 +60,7 @@ public class BoardController {
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
 
+        int pPage = 0; int nPage =0; int countPerPage = 10;
         Page<Board> list = null;
 
         if(searchKeyword == null) {
@@ -69,14 +70,31 @@ public class BoardController {
         }
 
         int nowPage = list.getPageable().getPageNumber() +1;
+        int totalBlock = list.getTotalPages();
+        int startPage = ((nowPage-1)/ countPerPage) * countPerPage + 1;
+        if(startPage == 1) {
+            pPage = 1;
+        }
+        if(startPage > 10) {
+            pPage = startPage - countPerPage;
+        }
 
-        int startPage = Math.max(nowPage - 4, 1);               //두 개 비교해서 큰 값을 반환한다.
-        int endPage = Math.min(nowPage + 5, list.getTotalPages());
+        int endPage = startPage + countPerPage -1;
+        if(endPage > totalBlock) {
+            endPage = totalBlock;
+            nPage = endPage;
+        } else {
+            nPage = endPage +1;
+        }
 
         model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("pPage", pPage);
+        model.addAttribute("nPage", nPage);
+        model.addAttribute("pageSize", 10);
+        model.addAttribute("nnPage", totalBlock);
 
         return "boardList";
     }
