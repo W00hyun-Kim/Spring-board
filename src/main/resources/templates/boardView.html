@@ -58,9 +58,21 @@
                     type="button">수정</a>
         </div>
         <div class="col">
-            <a class="w-100 btn btn-secondary btn-lg"
-                    th:href="@{${board.filepath}}"
+<!--            <a class="w-100 btn btn-secondary btn-lg"-->
+<!--                    th:href="@{${board.filepath}}"-->
+<!--                    type="button">다운로드</a>-->
+
+            <!--  다운로드할 파일이 없을 때 alert 예외처리    -->
+            <a class="w-100 btn btn-secondary btn-lg" th:if="${board.getFilename()==null}"
+                    th:href="@{message}"
                     type="button">다운로드</a>
+
+            <a class="w-100 btn btn-secondary btn-lg" th:unless="${board.getFilename()==null}"
+               th:href="@{${board.filepath}}"
+                    type="button">다운로드</a>
+
+
+
         </div>
 
         <div class="col">

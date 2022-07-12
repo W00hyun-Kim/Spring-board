@@ -31,6 +31,16 @@ public class BoardController {
         return "boardWrite";
     }
 
+    @GetMapping("/board/message")
+    public String NoFileAlert(Model model) {
+
+        //파일이 없을 때 예외처리
+        model.addAttribute("message", "다운로드할 파일이 없습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
+    }
+
     @PostMapping("/board/writepro")
     public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
         if(board.getTitle().isEmpty()) {
@@ -95,6 +105,7 @@ public class BoardController {
         model.addAttribute("nPage", nPage);
         model.addAttribute("pageSize", 10);
         model.addAttribute("nnPage", totalBlock);
+        model.addAttribute("ppPage", 1);
 
         return "boardList";
     }
@@ -103,6 +114,7 @@ public class BoardController {
     public String boardView(Model model, Integer id) {
         model.addAttribute("board", boardService.boardView(id));
         boardService.updateView(id);
+
         return "boardView";
     }
 

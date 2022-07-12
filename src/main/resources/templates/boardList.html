@@ -5,7 +5,29 @@
     <title>게시글 리스트 페이지</title>
     <link th:href="@{/css/bootstrap.min.css}"
           href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        #pageNum {
+            text-align:center;
+            margin:auto;
+            font-size: larger;
+            text-decoration-color: #13653f;
+            font-weight: bold;
+        }
+
+        #searchBlock {
+            text-align:center;
+            margin:auto;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 <div class="container" style="max-width: 1000px">
@@ -20,6 +42,7 @@
                     th:onclick="|location.href='@{/board/write}'|"
                     type="button">글 등록</button>
         </div>
+        <br>
     </div>
 
     <div>
@@ -49,28 +72,34 @@
             </tbody>
         </table>
     </div><br>
-    <div style="text-align:center; margin:auto">
 
+    <!--  Pagination  -->
+
+    <div id="pageNum" >
+
+        <a th:href="@{/board/list(page = ${ppPage - 1})}"> << </a>
         <a th:if="${pPage == 1}" th:href="@{/board/list(page = ${pPage - 1})}"> < </a>
         <a th:if="${pPage > pageSize}" th:href="@{/board/list(page = ${startPage}-10 -1)}"> < </a>
             <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
                 <!--    데이터가 아예 없을 때는 1만 표시하도록 하기 위해서     -->
-                <a th:if="${page == 0}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" ></a>
-                <a th:if="${page != 0 && page != nowPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                <a th:if="${page == 0}" th:href="@{/board/list(page = ${page - 1})}" ></a>
+                <a th:if="${page != 0 && page != nowPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
                 <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
             </th:block>
 
         <a th:if="${endPage < nnPage}" th:href="@{/board/list(page = ${startPage}+10 -1)}"> > </a>
         <a th:if="${endPage == nnPage}" th:href="@{/board/list(page = ${nnPage - 1})}"> > </a>
-
+        <a th:href="@{/board/list(page = ${nnPage - 1})}"> >> </a>
 
         <br>
+    </div>
+    <div id="searchBlock">
         <form th:action="@{/board/list}" method="get">
             <br><input type="text" name="searchKeyword">
             <button type="submit">검색</button>
         </form>
     </div>
-</div> <!-- /container -->
+</div>
 
 </body>
 </html>
