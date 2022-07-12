@@ -48,6 +48,12 @@
         <input type="text" class="form-control" th:value="${board.time}" readonly>
     </div>
 
+    <div>
+        <label> 첨부파일 </label>
+        <input type="text" class="form-control" th:if="${board.filename==null}" th:value="'파일 없음'" readonly>
+        <input type="text" class="form-control" th:unless="${board.filename==null}" th:value="${board.filename}" readonly>
+    </div>
+
 
     <hr class="my-4">
 
@@ -70,8 +76,6 @@
             <a class="w-100 btn btn-secondary btn-lg" th:unless="${board.getFilename()==null}"
                th:href="@{${board.filepath}}"
                     type="button">다운로드</a>
-
-
 
         </div>
 
