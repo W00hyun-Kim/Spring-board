@@ -54,9 +54,7 @@
         <input type="text" class="form-control" th:unless="${board.filename==null}" th:value="${board.filename}" readonly>
     </div>
 
-
     <hr class="my-4">
-
     <div class="row">
         <div class="col">
             <a class="w-100 btn btn-primary btn-lg"
@@ -64,9 +62,6 @@
                     type="button">수정</a>
         </div>
         <div class="col">
-<!--            <a class="w-100 btn btn-secondary btn-lg"-->
-<!--                    th:href="@{${board.filepath}}"-->
-<!--                    type="button">다운로드</a>-->
 
             <!--  다운로드할 파일이 없을 때 alert 예외처리    -->
             <a class="w-100 btn btn-secondary btn-lg" th:if="${board.getFilename()==null}"
@@ -84,7 +79,41 @@
                     th:href="@{/board/delete/{id}(id = ${board.id})}"
                     type="button" >삭제</a>
         </div>
+    </div><br><br>
+
+    <!--  Reply Section  -->
+
+    <div class="input-group mb-3">
+        <label> 댓글달기 </label>
+        <form id="reply" action="/board/view/replyWrite" method="post">
+            <input type="text" id="content" name="content" class="form-control" placeholder="댓글을 입력해주세요.." aria-label="댓글을 입력해주세요.." aria-describedby="basic-addon2">
+            <input type="hidden" id="id" name="id" th:value="${board.id}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">등록</button>
+            </div>
+        </form>
     </div>
+
+    <!--  댓글이 append되도록 한다.  -->
+    <table class="table">
+        <thead>
+            <tr style="text-align: center">
+                <th>글번호</th>
+                <th>댓글내용</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="reply : ${replyLists}">
+            <td style="text-align: center" th:text="${reply.replyId}"></td>
+            <td style="text-align: center" th:text="${reply.content}"></td>
+            <td style="text-align: center" th:text="${reply.createDate}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+
 
 </div> <!-- /container -->
 </body>
