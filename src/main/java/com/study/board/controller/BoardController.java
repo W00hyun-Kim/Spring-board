@@ -1,6 +1,8 @@
 package com.study.board.controller;
 
 import com.study.board.entity.Board;
+import com.study.board.entity.Reply;
+import com.study.board.repository.ReplyRepository;
 import com.study.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,12 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @GetMapping("/board/write") //localhost:8090/board/write
     public String boardWriteForm() {
@@ -114,6 +120,9 @@ public class BoardController {
     public String boardView(Model model, Integer id) {
         model.addAttribute("board", boardService.boardView(id));
         boardService.updateView(id);
+
+        List<Reply> replyLists = replyRepository.findReplyBoardId(id);
+        model.addAttribute("replyLists",replyLists);
 
         return "boardView";
     }

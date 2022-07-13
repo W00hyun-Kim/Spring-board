@@ -1,6 +1,7 @@
 package com.study.board.controller;
 
 import com.study.board.entity.Reply;
+import com.study.board.repository.ReplyRepository;
 import com.study.board.service.BoardService;
 import com.study.board.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +19,21 @@ import java.util.List;
 public class ReplyController {
 
     @Autowired
-    private final ReplyService replyService;
+    private ReplyService replyService;
+
+    @Autowired
+    private ReplyRepository replyRepository;
     @Autowired
     private BoardService boardService;
 
     @PostMapping("/board/view/replyWrite")
     public String replyWrite(@ModelAttribute Reply reply, Integer id, Model model) {
-        Reply tmp = replyService.replyWrite(reply, id);
-        System.out.println("확인  "+ tmp.getContent());
 
-//        List<Reply> replyLists = replyService.findAll(reply.getBoard().getId())
+        replyService.replyWrite(reply, id);
 
-        model.addAttribute("replyLists",tmp);
+        List<Reply> replyLists = replyRepository.findReplyBoardId(id);
+        model.addAttribute("replyLists",replyLists);
+
         model.addAttribute("board", boardService.boardView(id));
 
         return "boardView";

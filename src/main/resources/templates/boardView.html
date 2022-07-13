@@ -105,10 +105,10 @@
         </thead>
         <tbody>
 
-        <tr th:each="reply : ${replyLists}">
-            <td style="text-align: center" th:text="${reply.replyId}"></td>
-            <td style="text-align: center" th:text="${reply.content}"></td>
-            <td style="text-align: center" th:text="${reply.createDate}"></td>
+        <tr th:each="replyList : ${replyLists}">
+            <td style="text-align: center" th:text="${replyList.replyId}"></td>
+            <td style="text-align: center" th:text="${replyList.content}"></td>
+            <td style="text-align: center" th:text="${replyList.createDate}"></td>
         </tr>
 
         </tbody>
