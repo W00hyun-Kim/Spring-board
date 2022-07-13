@@ -121,6 +121,7 @@ public class BoardController {
         model.addAttribute("board", boardService.boardView(id));
         boardService.updateView(id);
 
+        //댓글 list가 계속 보여지기 위해서 view에도 명시해둠
         List<Reply> replyLists = replyRepository.findReplyBoardId(id);
         model.addAttribute("replyLists",replyLists);
 

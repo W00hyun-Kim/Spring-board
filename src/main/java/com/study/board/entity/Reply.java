@@ -30,12 +30,16 @@ public class Reply {
     @Column(nullable=false, length = 120)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id")
     private Board board;
 
-    @CreationTimestamp
-    private Timestamp createDate;
+    @Column(name = "time")
+    private String time;
+    @PrePersist             //DB에 해당 테이블의 insert 연산을 실행할 때 아래와 같이 실행하도록 하는 annotation
+    public void createdAt() {
+        this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")).toString();
+    }
 
     public Reply() {}
 }

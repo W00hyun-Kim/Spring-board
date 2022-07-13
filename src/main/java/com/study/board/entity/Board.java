@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 @Getter @Setter
 public class Board {
-
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    //부모가 지워지면 자식도 지워짐(orphan removal)
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Reply> reply;
 
     @Id

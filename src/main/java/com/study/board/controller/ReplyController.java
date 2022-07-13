@@ -33,7 +33,6 @@ public class ReplyController {
 
         List<Reply> replyLists = replyRepository.findReplyBoardId(id);
         model.addAttribute("replyLists",replyLists);
-
         model.addAttribute("board", boardService.boardView(id));
 
         return "boardView";
