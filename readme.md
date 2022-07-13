@@ -1,4 +1,4 @@
-# Spring-board 
+# Spring-board 📝
 
 > 스프링으로 구현한 게시판만들기 프로젝트입니다.
 
@@ -17,8 +17,7 @@
 화면 녹화 영상을 통해 사용 방법을 자세히 설명합니다.
 
 
-![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/95575122/169651047-4ececd6b-b89f-4012-9d1d-1b47a662a7dd.gif)
-
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/95575122/178652153-37c084c6-7794-450b-8eed-737a501297e5.gif)
 
 
 
