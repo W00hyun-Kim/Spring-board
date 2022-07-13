@@ -25,6 +25,7 @@ public class ReplyService {
 
         Optional<Board> findBoard = boardRepository.findById(id);
         reply.setBoard(findBoard.get());
+        reply.setWriter(findBoard.get().getWriter());
 
         return replyRepository.save(reply);
     }

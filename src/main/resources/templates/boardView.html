@@ -17,7 +17,11 @@
     <div class="py-5 text-center">
         <h2>게시글 상세</h2>
     </div>
-
+    <button class="btn btn-primary float-end"
+            onclick="location.href='boardList.html'"
+            th:onclick="|location.href='@{/board/list}'|"
+            type="button">HOME</button>
+    <br><br>
     <div>
         <label>ID</label>
         <input type="text" class="form-control" th:value="${board.id}" readonly>
@@ -81,24 +85,28 @@
         </div>
     </div><br><br>
 
-    <!--  Reply Section  -->
+    <hr class="my-4">
+    <h2>Comments</h2>
 
-    <div class="input-group mb-3">
-        <label> 댓글달기 </label>
-        <form id="reply" action="/board/view/replyWrite" method="post">
-            <input type="text" id="content" name="content" class="form-control" placeholder="댓글을 입력해주세요.." aria-label="댓글을 입력해주세요.." aria-describedby="basic-addon2">
-            <input type="hidden" id="id" name="id" th:value="${board.id}">
-            <div class="input-group-append">
+    <!-- Comments Form -->
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form name="comment-form" id="reply" action="/board/view/replyWrite" method="post" autocomplete="off">
+                <div class="form-group">
+                    <input cols="80" rows="10" type="text" id="content" name="content" class="form-control" placeholder="댓글을 입력해주세요.." aria-label="댓글을 입력해주세요.." aria-describedby="basic-addon2">
+                    <input style="width: 10px" type="hidden" id="id" name="id" th:value="${board.id}">
+                </div><br>
                 <button class="btn btn-outline-secondary" type="submit">등록</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <!--  댓글이 append되도록 한다.  -->
     <table class="table">
         <thead>
             <tr style="text-align: center">
-                <th>글번호</th>
+                <th>작성자</th>
                 <th>댓글내용</th>
                 <th>등록일</th>
             </tr>
@@ -106,7 +114,7 @@
         <tbody>
 
         <tr th:each="replyList : ${replyLists}">
-            <td style="text-align: center" th:text="${replyList.replyId}"></td>
+            <td style="text-align: center" th:text="${replyList.writer}"></td>
             <td style="text-align: center" th:text="${replyList.content}"></td>
             <td style="text-align: center" th:text="${replyList.time}"></td>
         </tr>
@@ -114,7 +122,6 @@
         </tbody>
     </table>
 
-
-</div> <!-- /container -->
+</div>
 </body>
 </html>

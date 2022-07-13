@@ -41,5 +41,8 @@ public class Reply {
         this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")).toString();
     }
 
+    @Column(nullable = false, length = 120)
+    private String writer;
+
     public Reply() {}
 }
