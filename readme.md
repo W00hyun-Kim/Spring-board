@@ -27,4 +27,4 @@
 
 Apache License 2.0 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.
 
-[https://github.com/W00hyun-Kim/Web-Notion-project](https://github.com/W00hyun-Kim/)
+[https://github.com/W00hyun-Kim/Spring-board](https://github.com/W00hyun-Kim/)
