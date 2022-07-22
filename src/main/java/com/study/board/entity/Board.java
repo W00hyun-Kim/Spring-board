@@ -1,5 +1,6 @@
 package com.study.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,9 +14,8 @@ import java.util.List;
 @Getter @Setter
 public class Board {
     //부모가 지워지면 자식도 지워짐(orphan removal)
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Reply> reply;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column

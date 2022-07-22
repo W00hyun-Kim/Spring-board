@@ -9,9 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-import java.sql.Timestamp;
-
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
@@ -20,5 +17,4 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     int updateView(@Param("id") int id);
 
     Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
-
 }

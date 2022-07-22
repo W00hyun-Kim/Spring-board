@@ -79,9 +79,10 @@
         </div>
 
         <div class="col">
-            <a class="w-100 btn btn-secondary btn-lg"
-                    th:href="@{/board/delete/{id}(id = ${board.id})}"
-                    type="button" >삭제</a>
+            <form action="/board/delete/" method="post" >
+                <input style="width: 10px" type="hidden" name="id" th:value="${board.id}">
+            <button class="w-100 btn btn-secondary btn-lg" type="submit">삭제</button>
+            </form>
         </div>
     </div><br><br>
 
@@ -94,6 +95,7 @@
         <div class="card-body">
             <form name="comment-form" id="reply" action="/board/view/replyWrite" method="post" autocomplete="off">
                 <div class="form-group">
+                    <input cols="80" rows="10" type="text" id="writer" name="writer" class="form-control" placeholder="작성자를 입력해주세요.." aria-label="작성자를 입력해주세요.." aria-describedby="basic-addon2">
                     <input cols="80" rows="10" type="text" id="content" name="content" class="form-control" placeholder="댓글을 입력해주세요.." aria-label="댓글을 입력해주세요.." aria-describedby="basic-addon2">
                     <input style="width: 10px" type="hidden" id="id" name="id" th:value="${board.id}">
                 </div><br>
@@ -109,19 +111,26 @@
                 <th>작성자</th>
                 <th>댓글내용</th>
                 <th>등록일</th>
+                <th></th>
+
             </tr>
         </thead>
         <tbody>
-
-        <tr th:each="replyList : ${replyLists}">
-            <td style="text-align: center" th:text="${replyList.writer}"></td>
-            <td style="text-align: center" th:text="${replyList.content}"></td>
-            <td style="text-align: center" th:text="${replyList.time}"></td>
-        </tr>
+            <tr th:each="replyList : ${replyLists}">
+                <td style="text-align: center" th:text="${replyList.writer}"></td>
+                <td style="text-align: center" th:text="${replyList.content}"></td>
+                <td style="text-align: center" th:text="${replyList.time}"></td>
+                <td style="text-align: center" th:text="${replyList.replyId}"></td>
+        <form action="/board/view/replyDelete/" method="post">
+                <input style="width: 10px" type="hidden" name="id" th:value="${replyList.replyId}">
+                <input style="width: 10px" type="hidden" name="boardId" th:value="${board.id}">
+                <td><button class="btn btn-outline-secondary" type="submit">댓글삭제</button></td>
+        </form>
+            </tr>
 
         </tbody>
     </table>
-
+    <br><br>
 </div>
 </body>
 </html>

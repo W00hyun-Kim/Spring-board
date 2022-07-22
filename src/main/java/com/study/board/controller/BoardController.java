@@ -1,9 +1,10 @@
 package com.study.board.controller;
 
+import com.study.board.DTO.Pagination;
 import com.study.board.entity.Board;
 import com.study.board.entity.Reply;
 import com.study.board.repository.ReplyRepository;
-import com.study.board.service.BoardService;
+import com.study.board.service.BoardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,12 +13,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 public class BoardController {
 
     @Autowired
-    private BoardService boardService;
+    private BoardServiceImpl boardService;
 
     @Autowired
     private ReplyRepository replyRepository;
@@ -73,10 +74,10 @@ public class BoardController {
     //endPage = 블럭에서 보여줄 마지막 페이지
     @GetMapping("/board/list")
     public String boardList(Model model,    //page: default페이지, size:한 페이지 게시글 수, sort:정렬 기준 컬럼, direction: 정렬 순서
-                            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+                            Pageable pageable,
                             String searchKeyword) {
 
-        int pPage = 0; int nPage =0; int countPerPage = 10;
         Page<Board> list = null;
 
         if(searchKeyword == null) {
@@ -85,60 +86,38 @@ public class BoardController {
             list = boardService.boardSearchList(searchKeyword, pageable);
         }
 
-        int nowPage = list.getPageable().getPageNumber() +1;
-        int totalBlock = list.getTotalPages();
-        int startPage = ((nowPage-1)/ countPerPage) * countPerPage + 1;
-        if(startPage == 1) {
-            pPage = 1;
-        }
-        if(startPage > 10) {
-            pPage = startPage - countPerPage;
-        }
-
-        int endPage = startPage + countPerPage -1;
-        if(endPage > totalBlock) {
-            endPage = totalBlock;
-            nPage = endPage;
-        } else {
-            nPage = endPage +1;
-        }
+        Pagination page = boardService.getPagination(pageable, list);
 
         model.addAttribute("list", list);
-        model.addAttribute("nowPage", nowPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("pPage", pPage);
-        model.addAttribute("nPage", nPage);
-        model.addAttribute("pageSize", 10);
-        model.addAttribute("nnPage", totalBlock);
-        model.addAttribute("ppPage", 1);
+        model.addAttribute("p", page);
+        model.addAttribute("searchKeyword", searchKeyword);
 
         return "boardList";
     }
 
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
-    public String boardView(Model model, Integer id) {
+    public String boardView(@ModelAttribute Reply reply, Model model, Integer id) {
         model.addAttribute("board", boardService.boardView(id));
         boardService.updateView(id);
 
         //댓글 list가 계속 보여지기 위해서 view에도 명시해둠
         List<Reply> replyLists = replyRepository.findReplyBoardId(id);
         model.addAttribute("replyLists",replyLists);
+        model.addAttribute("reply",reply);
 
         return "boardView";
     }
 
-    @GetMapping("/board/delete/{id}") // localhost:8080/board/delete?id=1
-    public String boardDelete(@PathVariable("id") Integer id) {
+    @PostMapping("/board/delete/") //localhost:9090/board/view?id=1 조건에 해당하는 모든 것을 뽑을 때
+    public String boardDelete(@PathParam("id") Integer id) {
 
         boardService.boardDelete(id);
 
         return "redirect:/board/list";
     }
 
-    @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id,
-                              Model model) {
+    @GetMapping("/board/modify/{id}") //localhost:9090/board/view 뽑고싶은거 하나일 때
+    public String boardModify(@PathVariable("id") Integer id, Model model) {
 
         model.addAttribute("board", boardService.boardView(id));
 
@@ -155,12 +134,6 @@ public class BoardController {
         boardTemp.setContent(board.getContent());
         boardTemp.setWriter(board.getWriter());
         boardTemp.setTime(nowTime);
-
-// file editing function -->
-//        boardTemp.setFilename(board.getFilename());
-//        boardTemp.setFilepath(board.getFilepath());
-
-//        boardService.write(boardTemp, file);
         boardService.write(boardTemp);
 
         return "redirect:/board/list";

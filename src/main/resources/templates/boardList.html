@@ -77,22 +77,26 @@
 
     <div id="pageNum" >
 
-        <a th:href="@{/board/list(page = ${ppPage - 1})}"> << </a>
-        <a th:if="${pPage == 1}" th:href="@{/board/list(page = ${pPage - 1})}"> < </a>
-        <a th:if="${pPage > pageSize}" th:href="@{/board/list(page = ${startPage}-10 -1)}"> < </a>
-            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <a th:href="@{/board/list(page = ${p.getPpPage() - 1},searchKeyword=${searchKeyword})}"> << </a>
+        <a th:if="${p.getpPage()== 1}" th:href="@{/board/list(page = ${p.getpPage() - 1},searchKeyword=${searchKeyword})}"> < </a>
+        <a th:if="${p.getpPage() > p.getPageSize()}" th:href="@{/board/list(page = ${p.getsPage()}-10 -1,searchKeyword=${searchKeyword})}"> < </a>
+
+
+            <th:block th:each="page : ${#numbers.sequence(p.getsPage(), p.getePage())}">
                 <!--    데이터가 아예 없을 때는 1만 표시하도록 하기 위해서     -->
-                <a th:if="${page == 0}" th:href="@{/board/list(page = ${page - 1})}" ></a>
-                <a th:if="${page != 0 && page != nowPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
-                <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
+                <a th:if="${page == 0}" th:href="@{/board/list(page = ${page - 1},searchKeyword=${searchKeyword})}" ></a>
+                <a th:if="${page != 0 && page != p.getcPage()}" th:href="@{/board/list(page = ${page - 1},searchKeyword=${searchKeyword})}" th:text="${page}"></a>
+                <strong th:if="${page == p.getcPage()}" th:text="${page}" style="color : Red"></strong>
             </th:block>
 
-        <a th:if="${endPage < nnPage}" th:href="@{/board/list(page = ${startPage}+10 -1)}"> > </a>
-        <a th:if="${endPage == nnPage}" th:href="@{/board/list(page = ${nnPage - 1})}"> > </a>
-        <a th:href="@{/board/list(page = ${nnPage - 1})}"> >> </a>
+        <a th:if="${p.getePage() < p.getNnPage()}" th:href="@{/board/list(page = ${p.getsPage()}+10 -1,searchKeyword=${searchKeyword})}"> > </a>
+        <a th:if="${p.getePage() == p.getNnPage()}" th:href="@{/board/list(page = ${p.getNnPage() - 1},searchKeyword=${searchKeyword})}"> > </a>
+
+        <a th:href="@{/board/list(page = ${p.getNnPage() - 1},searchKeyword=${searchKeyword})}"> >> </a>
 
         <br>
     </div>
+
     <div id="searchBlock">
         <form th:action="@{/board/list}" method="get">
             <br><input type="text" name="searchKeyword">

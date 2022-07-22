@@ -1,5 +1,6 @@
 package com.study.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -30,7 +31,7 @@ public class Reply {
     @Column(nullable=false, length = 120)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id")
     private Board board;
 
