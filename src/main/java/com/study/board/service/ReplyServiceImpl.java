@@ -7,6 +7,7 @@ import com.study.board.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,14 +19,16 @@ public class ReplyServiceImpl implements ReplyService{
     @Autowired
     private BoardRepository boardRepository;
 
-    public Reply replyWrite(Reply reply, Integer id) {
+    public List<Reply> replyWrite(Reply reply, Integer id) {
 
         Optional<Board> findBoard = boardRepository.findById(id);
         reply.setBoard(findBoard.get());
-//        reply.setWriter(findBoard.get().getWriter());
-        reply.setWriter(reply.getWriter());
+        //reply.setWriter(reply.getWriter());
+        replyRepository.save(reply);
+        List<Reply> replyLists = replyRepository.findReplyBoardId(id);
 
-        return replyRepository.save(reply);
+
+        return replyLists;
     }
 
     public void replyDelete(int replyid) {

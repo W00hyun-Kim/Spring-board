@@ -31,9 +31,7 @@ public class ReplyController {
     @PostMapping("/board/view/replyWrite")
     public String replyWrite(@ModelAttribute Reply reply, Integer id, Model model) {
 
-        replyService.replyWrite(reply, id);
-
-        List<Reply> replyLists = replyRepository.findReplyBoardId(id);
+        List<Reply> replyLists = replyService.replyWrite(reply, id);
         model.addAttribute("replyLists",replyLists);
         model.addAttribute("board", boardService.boardView(id));
 
